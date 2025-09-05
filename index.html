@@ -1,231 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Food Court</title>
-  <style>
-    * {margin: 0; padding: 0; box-sizing: border-box;}
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #f4f9ff;
-      color: #222;
-      overflow-x: hidden;
-    }
-
-    /* HEADER */
-    header {
-      background: linear-gradient(135deg, #3a8ef6, #45d3b8);
-      color: white; padding: 16px 24px;
-      text-align: center; font-size: 1.7rem; font-weight: bold;
-      position: sticky; top: 0; z-index: 1000;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    /* MENU GRID */
-    .menu {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      padding: 20px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .item {
-      background: white; border-radius: 16px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      overflow: hidden; display: flex; flex-direction: column;
-      justify-content: space-between; text-align: center;
-      padding-bottom: 16px; transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .item:hover {transform: translateY(-6px); box-shadow: 0 8px 20px rgba(0,0,0,0.15);}
-    .item img {width: 100%; height: 180px; object-fit: cover;}
-    .item h3 {font-size: 1.25rem; margin: 12px 0 6px;}
-    .item p {color: #3a8ef6; font-weight: bold; margin-bottom: 12px; font-size: 1rem;}
-    .item button {
-      background: linear-gradient(135deg, #3a8ef6, #45d3b8);
-      color: white; border: none; padding: 10px 18px; border-radius: 8px;
-      cursor: pointer; font-weight: bold; margin-top: auto; width: 80%; align-self: center;
-    }
-    .item button:hover {background: linear-gradient(135deg, #327ae0, #35bca2);}
-
-    /* CART MODAL */
-    #cartModal {
-      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.4); justify-content: center; align-items: center; z-index: 2000;
-      padding: 20px;
-    }
-    .cart-content {
-      background: white; border-radius: 12px; padding: 20px;
-      width: 100%; max-width: 500px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-    .cart-content h2 {margin-bottom: 10px; text-align: center;}
-    table {width: 100%; border-collapse: collapse; margin-bottom: 15px;}
-    table th, table td {border: 1px solid #ddd; padding: 10px; text-align: center;}
-    table th {background: #3a8ef6; color: white; font-weight: bold;}
-    .total {font-weight: bold; text-align: right; font-size: 1.2rem;}
-    .go-btn {
-      background: #45d3b8; border: none; color: white; padding: 10px 20px; border-radius: 6px;
-      cursor: pointer; display: block; margin: 0 auto; font-weight: bold; font-size: 1rem;
-    }
-
-    /* CART BUTTON */
-    .cart-btn-bottom {
-      display: block; width: fit-content; margin: 40px auto;
-      background: linear-gradient(135deg, #3a8ef6, #45d3b8); color: white;
-      border: none; padding: 14px 30px; font-size: 1.1rem;
-      border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      cursor: pointer; font-weight: bold; text-align: center;
-    }
-    .cart-btn-bottom:hover {background: linear-gradient(135deg, #327ae0, #35bca2);}
-
-    /* THANK YOU SECTION */
-    #thankyou-section {
-      display: none; justify-content: center; align-items: center; text-align: center;
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(135deg, #ff7eb3, #ff758c, #ffce00);
-      color: white; z-index: 3000; overflow: hidden; flex-direction: column;
-      padding: 20px;
-    }
-    #thankyou-section h1 {font-size: 2.5rem; animation: pop 1s ease; text-align: center;}
-    @keyframes pop {0% {transform: scale(0.5); opacity: 0;} 100% {transform: scale(1); opacity: 1;}}
-    .confetti {position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;}
-    .confetti div {
-      width: 10px; height: 10px; position: absolute; animation: fall 3s linear infinite;
-    }
-    @keyframes fall {0% {transform: translateY(-10px);} 100% {transform: translateY(100vh);}}
-    .back-btn {
-      margin-top: 20px; background: white; color: #ff758c; padding: 10px 20px; border-radius: 30px;
-      border: none; cursor: pointer; font-weight: bold; font-size: 1rem;
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      header {font-size: 1.4rem; padding: 14px;}
-      .item img {height: 150px;}
-      .item h3 {font-size: 1.1rem;}
-      .item p {font-size: 0.9rem;}
-      table th, table td {padding: 8px; font-size: 0.9rem;}
-      #thankyou-section h1 {font-size: 2rem;}
-    }
-    @media (max-width: 480px) {
-      .menu {grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));}
-      .item img {height: 120px;}
-      header {font-size: 1.2rem;}
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Court</title>
+    <style>
+        /* અહીં બધું CSS એ જ રહેશે, ફક્ત .item-varieties ને કાઢી નાખજો */
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Poppins',sans-serif;background:#f4f9ff;color:#222;}
+        header{
+            background:linear-gradient(135deg,#3a8ef6,#45d3b8);
+            color:white;padding:16px 24px;text-align:center;font-size:1.7rem;font-weight:bold;
+        }
+        .menu{
+            display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            gap:20px;padding:20px;max-width:1200px;margin:0 auto;
+        }
+        .item{
+            background:white;border-radius:16px;
+            box-shadow:0 4px 10px rgba(0,0,0,0.1);
+            display:flex;flex-direction:column;text-align:center;padding-bottom:16px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .item:hover{transform:translateY(-6px);box-shadow:0 8px 20px rgba(0,0,0,0.15);}
+        .item img{width:100%;height:180px;object-fit:cover;}
+        .item h3{margin:12px 0 6px;}
+        .item p{color:#3a8ef6;font-weight:bold;margin-bottom:12px;}
+        .item button{
+            background:linear-gradient(135deg,#3a8ef6,#45d3b8);
+            color:white;border:none;padding:10px 18px;border-radius:8px;
+            cursor:pointer;font-weight:bold;margin-top:auto;width:80%;align-self:center;
+        }
+        .item button:hover{background:linear-gradient(135deg,#327ae0,#35bca2);}
+        .cart-btn-bottom{
+            display:block;width:fit-content;margin:20px auto;
+            background:linear-gradient(135deg,#3a8ef6,#45d3b8);color:white;
+            border:none;padding:12px 30px;font-size:1.1rem;
+            border-radius:50px;cursor:pointer;font-weight:bold;text-align:center;
+        }
+        .cart-btn-bottom:hover{background:linear-gradient(135deg,#327ae0,#35bca2);}
+        #cartModal{
+            display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+            background:rgba(0,0,0,0.4);justify-content:center;align-items:center;z-index:2000;padding:20px;
+        }
+        .modal-content{
+            background:white;border-radius:12px;padding:20px;width:100%;max-width:500px;
+        }
+        table{width:100%;border-collapse:collapse;margin-bottom:15px;}
+        table th, table td{border:1px solid #ddd;padding:10px;text-align:center;}
+        table th{background:#3a8ef6;color:white;font-weight:bold;}
+        .total{text-align:right;font-weight:bold;font-size:1.2rem;}
+        .go-btn{
+            background:#45d3b8;border:none;color:white;padding:10px 20px;border-radius:6px;
+            cursor:pointer;display:block;margin:0 auto;font-weight:bold;font-size:1rem;
+        }
+        #thankyou-section{
+            display:none;justify-content:center;align-items:center;text-align:center;
+            position:fixed;top:0;left:0;width:100%;height:100%;
+            background:linear-gradient(135deg,#ff7eb3,#ff758c,#ffce00);
+            color:white;z-index:3000;flex-direction:column;padding:20px;
+        }
+        #thankyou-section h1{font-size:2.5rem;animation:pop 1s ease;}
+        .confetti{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+        .confetti div{
+            width:10px;height:10px;position:absolute;animation:fall 3s linear infinite;
+        }
+        .back-btn{
+            margin-top:20px;background:white;color:#ff758c;padding:10px 20px;border-radius:30px;
+            border:none;cursor:pointer;font-weight:bold;font-size:1rem;
+        }
+        @keyframes pop{0%{transform:scale(0.5);opacity:0;}100%{transform:scale(1);opacity:1;}}
+        @keyframes fall{0%{transform:translateY(-10px);}100%{transform:translateY(100vh);}}
+        @media(max-width:768px){.item img{height:150px;}.item h3{font-size:1.1rem;}.item p{font-size:0.9rem;}.menu{grid-template-columns:repeat(auto-fit,minmax(160px,1fr));}}
+    </style>
 </head>
 <body>
 
 <header>🍕 Food Court</header>
 
-<!-- MENU -->
 <div class="menu">
-  <div class="item">
-    <img src="https://png.pngtree.com/png-clipart/20230914/ourmid/pngtree-sausage-cheese-pizza-slice-three-dimensional-3d-gourmet-food-fast-food-png-image_10116852.png" alt="Cheese Pizza">
-    <h3>Cheese Pizza</h3>
-    <p>₹199</p>
-    <button onclick="addToCart('Cheese Pizza',199)">Add to Cart</button>
-  </div>
-  <div class="item">
-    <img src="https://tse4.mm.bing.net/th/id/OIP.zhrPQyX6s-4o233mYlCuFQHaFl?cb=thfc1&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Veg Burger">
-    <h3>Veg Burger</h3>
-    <p>₹99</p>
-    <button onclick="addToCart('Veg Burger',99)">Add to Cart</button>
-  </div>
-  <div class="item">
-    <img src="https://tse4.mm.bing.net/th/id/OIP.dJXRd-YM1toRB7KnZNgEKwHaE8?cb=thfc1&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Pasta">
-    <h3>Italian Pasta</h3>
-    <p>₹150</p>
-    <button onclick="addToCart('Italian Pasta',150)">Add to Cart</button>
-  </div>
-  <div class="item">
-    <img src="https://static.vecteezy.com/system/resources/previews/047/429/595/non_2x/refreshing-glass-of-cola-with-ice-cubes-splashing-out-perfect-for-representing-a-cool-beverage-or-drink-advertisement-png.png" alt="Cold Drink">
-    <h3>Cold Drink</h3>
-    <p>₹50</p>
-    <button onclick="addToCart('Cold Drink',50)">Add to Cart</button>
-  </div>
+    <div class="item">
+        <img src="https://png.pngtree.com/png-clipart/20230914/ourmid/pngtree-sausage-cheese-pizza-slice-three-dimensional-3d-gourmet-food-fast-food-png-image_10116852.png" alt="Pizza">
+        <h3>Pizza</h3>
+        <button onclick="window.location.href='pizza.html'">View Varieties</button>
+    </div>
+
+    <div class="item">
+        <img src="https://tse4.mm.bing.net/th/id/OIP.zhrPQyX6s-4o233mYlCuFQHaFl?cb=thfc1&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Veg Burger">
+        <h3>Veg Burger</h3>
+        <button onclick="window.location.href='burger.html'">View Varieties</button>
+    </div>
+
+    <div class="item">
+        <img src="https://static.vecteezy.com/system/resources/previews/047/429/595/non_2x/refreshing-glass-of-cola-with-ice-cubes-splashing-out-perfect-for-representing-a-cool-beverage-or-drink-advertisement-png.png" alt="Cold Drink">
+        <h3>Cold Drink</h3>
+        <button onclick="window.location.href='cold_drink.html'">View Varieties</button>
+    </div>
+
+    <div class="item">
+        <img src="https://tse4.mm.bing.net/th/id/OIP.dJXRd-YM1toRB7KnZNgEKwHaE8?cb=thfc1&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Pasta">
+        <h3>Italian Pasta</h3>
+        <p>₹150</p>
+        <button onclick="addToCart('Italian Pasta',150)">Add to Cart</button>
+    </div>
 </div>
 
-<!-- CART BUTTON -->
 <button class="cart-btn-bottom" onclick="openCart()">🛒 View Cart (<span id='cart-count'>0</span>)</button>
 
-<!-- CART MODAL -->
-<div id="cartModal">
-  <div class="cart-content">
-    <h2>Your Cart</h2>
-    <table>
-      <thead><tr><th>Item</th><th>Qty</th><th>Price</th></tr></thead>
-      <tbody id="cart-items"></tbody>
-    </table>
-    <div class="total">Total: ₹<span id="cart-total">0</span></div>
-    <button class="go-btn" onclick="showThankYou()">Go</button>
-  </div>
-</div>
-
-<!-- THANK YOU PAGE -->
-<div id="thankyou-section">
-  <h1>🎉 Thanks for Visiting! 🎉</h1>
-  <button class="back-btn" onclick="hideThankYou()">Back to Home</button>
-  <div class="confetti"></div>
-</div>
+<div id="cartModal">...</div>
+<div id="thankyou-section">...</div>
 
 <script>
-  let cart = [];
-
-  function addToCart(name, price) {
-    let found = cart.find(item => item.name === name);
-    if (found) found.qty++;
-    else cart.push({name, price, qty:1});
-    updateCartCount();
-    alert(name+" added to cart!");
-  }
-
-  function updateCartCount() {
-    let count = cart.reduce((a,b)=>a+b.qty,0);
-    document.getElementById('cart-count').innerText = count;
-  }
-
-  function openCart() {
-    document.getElementById('cartModal').style.display = 'flex';
-    renderCart();
-  }
-
-  function renderCart() {
-    let cartTable = document.getElementById('cart-items');
-    cartTable.innerHTML = '';
-    let total=0;
-    cart.forEach(item=>{
-      let price=item.price*item.qty;
-      total+=price;
-      cartTable.innerHTML+=`<tr><td>${item.name}</td><td>${item.qty}</td><td>₹${price}</td></tr>`;
-    });
-    document.getElementById('cart-total').innerText=total;
-  }
-
-  function showThankYou() {
-    document.getElementById('cartModal').style.display='none';
-    document.getElementById('thankyou-section').style.display='flex';
-    createConfetti();
-  }
-
-  function hideThankYou() {
-    document.getElementById('thankyou-section').style.display='none';
-  }
-
-  function createConfetti(){
-    const confetti=document.querySelector('.confetti');
-    confetti.innerHTML='';
-    for(let i=0;i<100;i++){
-      const piece=document.createElement('div');
-      piece.style.left=Math.random()*100+'vw';
-      piece.style.background=`hsl(${Math.random()*360},100%,50%)`;
-      piece.style.animationDuration=(Math.random()*2+2)+'s';
-      piece.style.opacity=Math.random();
-      confetti.appendChild(piece);
+    // અહીં JavaScript કોડ એ જ રહેશે, ફક્ત toggleVarieties વાળા ફંક્શન કાઢી નાખજો.
+    let cart = [];
+    function addToCart(name, price) {
+      let found = cart.find(i => i.name === name);
+      if (found) found.qty++;
+      else cart.push({name, price, qty: 1});
+      updateCartCount();
+      alert(name+" added to cart!");
     }
-  }
+    function updateCartCount(){
+      let count=cart.reduce((a,b)=>a+b.qty,0);
+      document.getElementById('cart-count').innerText=count;
+    }
+    function openCart(){
+      document.getElementById('cartModal').style.display='flex';
+      renderCart();
+    }
+    function renderCart(){
+      let cartTable=document.getElementById('cart-items');
+      cartTable.innerHTML='';
+      let total=0;
+      cart.forEach(item=>{
+        let price=item.price*item.qty;
+        total+=price;
+        cartTable.innerHTML+=`<tr><td>${item.name}</td><td>${item.qty}</td><td>₹${price}</td></tr>`;
+      });
+      document.getElementById('cart-total').innerText=total;
+    }
+    function showThankYou(){
+      document.getElementById('cartModal').style.display='none';
+      document.getElementById('thankyou-section').style.display='flex';
+      createConfetti();
+    }
+    function hideThankYou(){
+      document.getElementById('thankyou-section').style.display='none';
+      cart = [];
+      updateCartCount();
+    }
+    function createConfetti(){
+      const confetti=document.querySelector('.confetti');
+      confetti.innerHTML='';
+      for(let i=0;i<100;i++){
+        const piece=document.createElement('div');
+        piece.style.left=Math.random()*100+'vw';
+        piece.style.background=`hsl(${Math.random()*360},100%,50%)`;
+        piece.style.animation=`fall ${Math.random()*2+2}s linear infinite`;
+        piece.style.opacity=Math.random();
+        confetti.appendChild(piece);
+      }
+    }
 </script>
 
 </body>
