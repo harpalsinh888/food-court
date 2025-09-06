@@ -1,3 +1,6 @@
+// This file manages the cart state using localStorage
+// It's included in both index.html and pizza.html
+
 let cart = JSON.parse(localStorage.getItem('foodCart')) || [];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -12,6 +15,7 @@ function addToCart(name, price) {
         cart.push({ name, price, qty: 1 });
     }
     
+    // Save the updated cart to localStorage
     localStorage.setItem('foodCart', JSON.stringify(cart));
     
     updateCartCount();
@@ -47,6 +51,7 @@ function showThankYou() {
     document.getElementById('cartModal').style.display = 'none';
     document.getElementById('thankyou-section').style.display = 'flex';
     
+    // Clear the cart after the order is completed
     localStorage.removeItem('foodCart');
     cart = [];
     updateCartCount();
@@ -61,6 +66,7 @@ function hideThankYou() {
 
 function createConfetti() {
     const confetti = document.querySelector('.confetti');
+    if (!confetti) return;
     confetti.innerHTML = '';
     for (let i = 0; i < 100; i++) {
         const piece = document.createElement('div');
