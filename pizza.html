@@ -1,78 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pizza Varieties</title>
-    <style>
-        /* અહીં CSS એ જ રહેશે જે તમારા મુખ્ય કોડમાં છે */
-        *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:'Poppins',sans-serif;background:#f4f9ff;color:#222;}
-        header{
-            background:linear-gradient(135deg,#3a8ef6,#45d3b8);
-            color:white;padding:16px 24px;text-align:center;font-size:1.7rem;font-weight:bold;
-        }
-        .menu{
-            display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-            gap:20px;padding:20px;max-width:1200px;margin:0 auto;
-        }
-        .item{
-            background:white;border-radius:16px;
-            box-shadow:0 4px 10px rgba(0,0,0,0.1);
-            display:flex;flex-direction:column;text-align:center;padding-bottom:16px;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .item:hover{transform:translateY(-6px);box-shadow:0 8px 20px rgba(0,0,0,0.15);}
-        .item img{width:100%;height:180px;object-fit:cover;}
-        .item h3{margin:12px 0 6px;}
-        .item p{color:#3a8ef6;font-weight:bold;margin-bottom:12px;}
-        .item button{
-            background:linear-gradient(135deg,#3a8ef6,#45d3b8);
-            color:white;border:none;padding:10px 18px;border-radius:8px;
-            cursor:pointer;font-weight:bold;margin-top:auto;width:80%;align-self:center;
-        }
-        .item button:hover{background:linear-gradient(135deg,#327ae0,#35bca2);}
-        .cart-btn-bottom{
-            display:block;width:fit-content;margin:20px auto;
-            background:linear-gradient(135deg,#3a8ef6,#45d3b8);color:white;
-            border:none;padding:12px 30px;font-size:1.1rem;
-            border-radius:50px;cursor:pointer;font-weight:bold;text-align:center;
-        }
-        .cart-btn-bottom:hover{background:linear-gradient(135deg,#327ae0,#35bca2);}
-        #cartModal{
-            display:none;position:fixed;top:0;left:0;width:100%;height:100%;
-            background:rgba(0,0,0,0.4);justify-content:center;align-items:center;z-index:2000;padding:20px;
-        }
-        .modal-content{
-            background:white;border-radius:12px;padding:20px;width:100%;max-width:500px;
-        }
-        table{width:100%;border-collapse:collapse;margin-bottom:15px;}
-        table th, table td{border:1px solid #ddd;padding:10px;text-align:center;}
-        table th{background:#3a8ef6;color:white;font-weight:bold;}
-        .total{text-align:right;font-weight:bold;font-size:1.2rem;}
-        .go-btn{
-            background:#45d3b8;border:none;color:white;padding:10px 20px;border-radius:6px;
-            cursor:pointer;display:block;margin:0 auto;font-weight:bold;font-size:1rem;
-        }
-        #thankyou-section{
-            display:none;justify-content:center;align-items:center;text-align:center;
-            position:fixed;top:0;left:0;width:100%;height:100%;
-            background:linear-gradient(135deg,#ff7eb3,#ff758c,#ffce00);
-            color:white;z-index:3000;flex-direction:column;padding:20px;
-        }
-        #thankyou-section h1{font-size:2.5rem;animation:pop 1s ease;}
-        .confetti{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
-        .confetti div{
-            width:10px;height:10px;position:absolute;animation:fall 3s linear infinite;
-        }
-        .back-btn{
-            margin-top:20px;background:white;color:#ff758c;padding:10px 20px;border-radius:30px;
-            border:none;cursor:pointer;font-weight:bold;font-size:1rem;
-        }
-        @keyframes pop{0%{transform:scale(0.5);opacity:0;}100%{transform:scale(1);opacity:1;}}
-        @keyframes fall{0%{transform:translateY(-10px);}100%{transform:translateY(100vh);}}
-        @media(max-width:768px){.item img{height:150px;}.item h3{font-size:1.1rem;}.item p{font-size:0.9rem;}.menu{grid-template-columns:repeat(auto-fit,minmax(160px,1fr));}}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pizza Varieties</title>
+<style>
+/* Same CSS as before */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Poppins',sans-serif;background:#f4f9ff;color:#222;}
+header{
+    background:linear-gradient(135deg,#3a8ef6,#45d3b8);
+    color:white;padding:16px 24px;text-align:center;font-size:1.7rem;font-weight:bold;
+}
+.menu{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;padding:20px;max-width:1200px;margin:0 auto;
+}
+.item{
+    background:white;border-radius:16px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    display:flex;flex-direction:column;text-align:center;padding-bottom:16px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.item:hover{transform:translateY(-6px);box-shadow:0 8px 20px rgba(0,0,0,0.15);}
+.item img{width:100%;height:180px;object-fit:cover;}
+.item h3{margin:12px 0 6px;}
+.item p{color:#3a8ef6;font-weight:bold;margin-bottom:12px;}
+.item button{
+    background:linear-gradient(135deg,#3a8ef6,#45d3b8);
+    color:white;border:none;padding:10px 18px;border-radius:8px;
+    cursor:pointer;font-weight:bold;margin-top:auto;width:80%;align-self:center;
+}
+.item button:hover{background:linear-gradient(135deg,#327ae0,#35bca2);}
+.cart-btn-bottom{
+    display:block;width:fit-content;margin:20px auto;
+    background:linear-gradient(135deg,#3a8ef6,#45d3b8);color:white;
+    border:none;padding:12px 30px;font-size:1.1rem;
+    border-radius:50px;cursor:pointer;font-weight:bold;text-align:center;
+}
+.cart-btn-bottom:hover{background:linear-gradient(135deg,#327ae0,#35bca2);}
+#cartModal{
+    display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+    background:rgba(0,0,0,0.4);justify-content:center;align-items:center;z-index:2000;padding:20px;
+}
+.modal-content{
+    background:white;border-radius:12px;padding:20px;width:100%;max-width:500px;
+}
+table{width:100%;border-collapse:collapse;margin-bottom:15px;}
+table th, table td{border:1px solid #ddd;padding:10px;text-align:center;}
+table th{background:#3a8ef6;color:white;font-weight:bold;}
+.total{text-align:right;font-weight:bold;font-size:1.2rem;}
+.go-btn{
+    background:#45d3b8;border:none;color:white;padding:10px 20px;border-radius:6px;
+    cursor:pointer;display:block;margin:0 auto;font-weight:bold;font-size:1rem;
+}
+#thankyou-section{
+    display:none;justify-content:center;align-items:center;text-align:center;
+    position:fixed;top:0;left:0;width:100%;height:100%;
+    background:linear-gradient(135deg,#ff7eb3,#ff758c,#ffce00);
+    color:white;z-index:3000;flex-direction:column;padding:20px;
+}
+#thankyou-section h1{font-size:2.5rem;animation:pop 1s ease;}
+.confetti{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+.confetti div{
+    width:10px;height:10px;position:absolute;animation:fall 3s linear infinite;
+}
+.back-btn{
+    margin-top:20px;background:white;color:#ff758c;padding:10px 20px;border-radius:30px;
+    border:none;cursor:pointer;font-weight:bold;font-size:1rem;
+}
+@keyframes pop{0%{transform:scale(0.5);opacity:0;}100%{transform:scale(1);opacity:1;}}
+@keyframes fall{0%{transform:translateY(-10px);}100%{transform:translateY(100vh);}}
+@media(max-width:768px){.item img{height:150px;}.item h3{font-size:1.1rem;}.item p{font-size:0.9rem;}.menu{grid-template-columns:repeat(auto-fit,minmax(160px,1fr));}}
+</style>
 </head>
 <body>
 
@@ -119,82 +119,7 @@
     <div class="confetti"></div>
 </div>
 
-<script>
-    // કાર્ટનો ડેટા localStorage માંથી લોડ કરો અથવા ખાલી એરે બનાવો
-    let cart = JSON.parse(localStorage.getItem('foodCart')) || [];
-
-    // જ્યારે પેજ લોડ થાય ત્યારે કાર્ટ કાઉન્ટ અપડેટ કરો
-    document.addEventListener('DOMContentLoaded', () => {
-      updateCartCount();
-    });
-
-    function addToCart(name, price) {
-        let found = cart.find(i => i.name === name);
-        if (found) {
-            found.qty++;
-        } else {
-            cart.push({ name, price, qty: 1 });
-        }
-        
-        // કાર્ટનો ડેટા localStorage માં સેવ કરો
-        localStorage.setItem('foodCart', JSON.stringify(cart));
-        
-        updateCartCount();
-        alert(name + " added to cart!");
-    }
-
-    function updateCartCount() {
-        let count = cart.reduce((a, b) => a + b.qty, 0);
-        document.getElementById('cart-count').innerText = count;
-    }
-
-    function openCart() {
-        document.getElementById('cartModal').style.display = 'flex';
-        renderCart();
-    }
-
-    function renderCart() {
-        let cartTable = document.getElementById('cart-items');
-        cartTable.innerHTML = '';
-        let total = 0;
-        cart.forEach(item => {
-            let price = item.price * item.qty;
-            total += price;
-            cartTable.innerHTML += `<tr><td>${item.name}</td><td>${item.qty}</td><td>₹${price}</td></tr>`;
-        });
-        document.getElementById('cart-total').innerText = total;
-    }
-
-    function showThankYou() {
-        document.getElementById('cartModal').style.display = 'none';
-        document.getElementById('thankyou-section').style.display = 'flex';
-        
-        // ઓર્ડર પૂરો થયા પછી કાર્ટ ખાલી કરો
-        localStorage.removeItem('foodCart');
-        cart = [];
-        updateCartCount();
-        
-        createConfetti();
-    }
-
-    function hideThankYou() {
-        document.getElementById('thankyou-section').style.display = 'none';
-        window.location.href = 'index.html'; // મુખ્ય પેજ પર પાછા જવા માટે
-    }
-
-    function createConfetti() {
-        const confetti = document.querySelector('.confetti');
-        confetti.innerHTML = '';
-        for (let i = 0; i < 100; i++) {
-            const piece = document.createElement('div');
-            piece.style.left = Math.random() * 100 + 'vw';
-            piece.style.background = `hsl(${Math.random() * 360},100%,50%)`;
-            piece.style.animation = `fall ${Math.random() * 2 + 2}s linear infinite`;
-            piece.style.opacity = Math.random();
-            confetti.appendChild(piece);
-        }
-    }
-</script>
+<script src="cart.js"></script>
 
 </body>
 </html>
