@@ -32,6 +32,46 @@
             cursor:pointer;font-weight:bold;margin-top:auto;width:80%;align-self:center;
         }
         .item button:hover{background:linear-gradient(135deg,#327ae0,#35bca2);}
+        .cart-btn-bottom{
+            display:block;width:fit-content;margin:20px auto;
+            background:linear-gradient(135deg,#3a8ef6,#45d3b8);color:white;
+            border:none;padding:12px 30px;font-size:1.1rem;
+            border-radius:50px;cursor:pointer;font-weight:bold;text-align:center;
+        }
+        .cart-btn-bottom:hover{background:linear-gradient(135deg,#327ae0,#35bca2);}
+        #cartModal{
+            display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+            background:rgba(0,0,0,0.4);justify-content:center;align-items:center;z-index:2000;padding:20px;
+        }
+        .modal-content{
+            background:white;border-radius:12px;padding:20px;width:100%;max-width:500px;
+        }
+        table{width:100%;border-collapse:collapse;margin-bottom:15px;}
+        table th, table td{border:1px solid #ddd;padding:10px;text-align:center;}
+        table th{background:#3a8ef6;color:white;font-weight:bold;}
+        .total{text-align:right;font-weight:bold;font-size:1.2rem;}
+        .go-btn{
+            background:#45d3b8;border:none;color:white;padding:10px 20px;border-radius:6px;
+            cursor:pointer;display:block;margin:0 auto;font-weight:bold;font-size:1rem;
+        }
+        #thankyou-section{
+            display:none;justify-content:center;align-items:center;text-align:center;
+            position:fixed;top:0;left:0;width:100%;height:100%;
+            background:linear-gradient(135deg,#ff7eb3,#ff758c,#ffce00);
+            color:white;z-index:3000;flex-direction:column;padding:20px;
+        }
+        #thankyou-section h1{font-size:2.5rem;animation:pop 1s ease;}
+        .confetti{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+        .confetti div{
+            width:10px;height:10px;position:absolute;animation:fall 3s linear infinite;
+        }
+        .back-btn{
+            margin-top:20px;background:white;color:#ff758c;padding:10px 20px;border-radius:30px;
+            border:none;cursor:pointer;font-weight:bold;font-size:1rem;
+        }
+        @keyframes pop{0%{transform:scale(0.5);opacity:0;}100%{transform:scale(1);opacity:1;}}
+        @keyframes fall{0%{transform:translateY(-10px);}100%{transform:translateY(100vh);}}
+        @media(max-width:768px){.item img{height:150px;}.item h3{font-size:1.1rem;}.item p{font-size:0.9rem;}.menu{grid-template-columns:repeat(auto-fit,minmax(160px,1fr));}}
     </style>
 </head>
 <body>
@@ -58,6 +98,103 @@
         <button onclick="addToCart('Italian Pizza',299)">Add</button>
     </div>
 </div>
+
+<button class="cart-btn-bottom" onclick="openCart()">🛒 View Cart (<span id='cart-count'>0</span>)</button>
+
+<div id="cartModal">
+    <div class="modal-content">
+        <h2>Your Cart</h2>
+        <table>
+            <thead><tr><th>Item</th><th>Qty</th><th>Price</th></tr></thead>
+            <tbody id="cart-items"></tbody>
+        </table>
+        <div class="total">Total: ₹<span id="cart-total">0</span></div>
+        <button class="go-btn" onclick="showThankYou()">Go</button>
+    </div>
+</div>
+
+<div id="thankyou-section">
+    <h1>🎉 Thanks for Visiting! 🎉</h1>
+    <button class="back-btn" onclick="hideThankYou()">Back to Home</button>
+    <div class="confetti"></div>
+</div>
+
+<script>
+    // કાર્ટનો ડેટા localStorage માંથી લોડ કરો અથવા ખાલી એરે બનાવો
+    let cart = JSON.parse(localStorage.getItem('foodCart')) || [];
+
+    // જ્યારે પેજ લોડ થાય ત્યારે કાર્ટ કાઉન્ટ અપડેટ કરો
+    document.addEventListener('DOMContentLoaded', () => {
+      updateCartCount();
+    });
+
+    function addToCart(name, price) {
+        let found = cart.find(i => i.name === name);
+        if (found) {
+            found.qty++;
+        } else {
+            cart.push({ name, price, qty: 1 });
+        }
+        
+        // કાર્ટનો ડેટા localStorage માં સેવ કરો
+        localStorage.setItem('foodCart', JSON.stringify(cart));
+        
+        updateCartCount();
+        alert(name + " added to cart!");
+    }
+
+    function updateCartCount() {
+        let count = cart.reduce((a, b) => a + b.qty, 0);
+        document.getElementById('cart-count').innerText = count;
+    }
+
+    function openCart() {
+        document.getElementById('cartModal').style.display = 'flex';
+        renderCart();
+    }
+
+    function renderCart() {
+        let cartTable = document.getElementById('cart-items');
+        cartTable.innerHTML = '';
+        let total = 0;
+        cart.forEach(item => {
+            let price = item.price * item.qty;
+            total += price;
+            cartTable.innerHTML += `<tr><td>${item.name}</td><td>${item.qty}</td><td>₹${price}</td></tr>`;
+        });
+        document.getElementById('cart-total').innerText = total;
+    }
+
+    function showThankYou() {
+        document.getElementById('cartModal').style.display = 'none';
+        document.getElementById('thankyou-section').style.display = 'flex';
+        
+        // ઓર્ડર પૂરો થયા પછી કાર્ટ ખાલી કરો
+        localStorage.removeItem('foodCart');
+        cart = [];
+        updateCartCount();
+        
+        createConfetti();
+    }
+
+    function hideThankYou() {
+        document.getElementById('thankyou-section').style.display = 'none';
+        window.location.href = 'index.html'; // મુખ્ય પેજ પર પાછા જવા માટે
+    }
+
+    function createConfetti() {
+        const confetti = document.querySelector('.confetti');
+        confetti.innerHTML = '';
+        for (let i = 0; i < 100; i++) {
+            const piece = document.createElement('div');
+            piece.style.left = Math.random() * 100 + 'vw';
+            piece.style.background = `hsl(${Math.random() * 360},100%,50%)`;
+            piece.style.animation = `fall ${Math.random() * 2 + 2}s linear infinite`;
+            piece.style.opacity = Math.random();
+            confetti.appendChild(piece);
+        }
+    }
+</script>
 
 </body>
 </html>
