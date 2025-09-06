@@ -5,18 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pizza Varieties</title>
     <style>
-        /* Same CSS as the index.html file */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; background: #f4f9ff; color: #222; }
         header { background: linear-gradient(135deg, #3a8ef6, #45d3b8); color: white; padding: 16px 24px; text-align: center; font-size: 1.7rem; font-weight: bold; }
         .menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; padding: 15px; max-width: 1200px; margin: 0 auto; }
-        .item { background: white; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; text-align: center; padding-bottom: 12px; transition: transform 0.3s, box-shadow 0.3s; }
+        .item { background: white; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; text-align: center; padding: 12px; transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; }
         .item:hover { transform: translateY(-4px); box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); }
-        .item img { width: 100%; height: 120px; object-fit: cover; border-top-left-radius: 12px; border-top-right-radius: 12px; }
+        .item img { width: 100%; height: 120px; object-fit: cover; border-radius: 8px; }
         .item h3 { margin: 10px 0 5px; font-size: 1rem; }
-        .item p { color: #3a8ef6; font-weight: bold; margin-bottom: 8px; font-size: 0.9rem; }
-        .item button { background: linear-gradient(135deg, #3a8ef6, #45d3b8); color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: auto; width: 90%; align-self: center; font-size: 0.9rem; }
-        .item button:hover { background: linear-gradient(135deg, #327ae0, #35bca2); }
+        .item p { color: #3a8ef6; font-weight: bold; margin-bottom: 0; font-size: 0.9rem; }
         .cart-btn-bottom { display: block; width: fit-content; margin: 20px auto; background: linear-gradient(135deg, #3a8ef6, #45d3b8); color: white; border: none; padding: 12px 30px; font-size: 1.1rem; border-radius: 50px; cursor: pointer; font-weight: bold; text-align: center; }
         .cart-btn-bottom:hover { background: linear-gradient(135deg, #327ae0, #35bca2); }
         #cartModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); justify-content: center; align-items: center; z-index: 2000; padding: 20px; }
@@ -44,23 +41,20 @@
 <header>🍕 Pizza Varieties</header>
 
 <div class="menu">
-    <div class="item">
+    <div class="item" onclick="addToCart('Margherita Pizza',199)">
         <img src="https://static.vecteezy.com/system/resources/previews/037/496/555/non_2x/ai-generated-margherita-pizza-with-basil-free-png.png" alt="Margherita Pizza">
         <h3>Margherita Pizza</h3>
         <p>₹199</p>
-        <button onclick="addToCart('Margherita Pizza',199)">Add</button>
     </div>
-    <div class="item">
+    <div class="item" onclick="addToCart('Double Cheese Pizza',249)">
         <img src="https://tse4.mm.bing.net/th/id/OIP.dJXRd-YM1toRB7KnZNgEKwHaE8?cb=thfc1&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Double Cheese Pizza">
         <h3>Double Cheese Pizza</h3>
         <p>₹249</p>
-        <button onclick="addToCart('Double Cheese Pizza',249)">Add</button>
     </div>
-    <div class="item">
+    <div class="item" onclick="addToCart('Italian Pizza',299)">
         <img src="https://tse4.mm.bing.net/th/id/OIP.dJXRd-YM1toRB7KnZNgEKwHaE8?cb=thfc1&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Italian Pizza">
         <h3>Italian Pizza</h3>
         <p>₹299</p>
-        <button onclick="addToCart('Italian Pizza',299)">Add</button>
     </div>
 </div>
 
