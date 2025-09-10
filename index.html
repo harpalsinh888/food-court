@@ -5,142 +5,70 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Food Court - Menu</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-    }
-    header {
-      background: #ff4d4d;
-      color: white;
-      padding: 15px;
-      text-align: center;
-      font-size: 22px;
-      font-weight: bold;
-    }
-    .menu {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 15px;
-      padding: 15px;
-    }
-    .item {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
-      padding: 10px;
-      text-align: center;
-      transition: transform 0.2s;
-    }
-    .item:hover { transform: scale(1.03); }
-    .item img {
-      max-width: 100%;
-      height: 150px;
-      border-radius: 10px;
-    }
-    .item h3 { margin: 10px 0; font-size: 18px; }
-    .item p { color: #333; margin: 5px 0; }
-    .item button {
-      background: #ff4d4d;
-      color: white;
-      border: none;
-      padding: 10px;
-      border-radius: 5px;
-      cursor: pointer;
-      width: 100%;
-    }
-    footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: #ff4d4d;
-      text-align: center;
-      padding: 10px;
-    }
-    footer button {
-      background: white;
-      color: #ff4d4d;
-      font-size: 18px;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #fff8f0; }
+    header { background: #ff7043; color: white; padding: 15px; text-align: center; font-size: 24px; }
+    .menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; padding: 20px; }
+    .card { background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; text-align: center; }
+    img { width: 100%; height: 150px; object-fit: cover; border-radius: 10px; }
+    button { background: #ff5722; color: white; border: none; padding: 10px; margin-top: 10px; width: 100%; cursor: pointer; border-radius: 5px; }
+    button:hover { background: #e64a19; }
+    .cart-btn { position: fixed; bottom: 20px; right: 20px; background: #ff7043; color: white; border: none; padding: 15px 25px; border-radius: 50px; font-size: 18px; cursor: pointer; }
   </style>
 </head>
 <body>
-  <header>🍕 Food Court Menu</header>
-
+  <header>🍕 Food Court</header>
   <div class="menu">
-    <div class="item">
+    <div class="card">
       <img src="https://png.pngtree.com/png-clipart/20230914/ourmid/pngtree-sausage-cheese-pizza-slice-three-dimensional-3d-gourmet-food-fast-food-png-image_10116852.png">
       <h3>Pizza</h3>
-      <p>₹200</p>
-      <button onclick="addToCart('Pizza', 200)">Add to Cart</button>
+      <p>₹150</p>
+      <button onclick="addToCart('Pizza',150)">Add to Cart</button>
     </div>
-
-    <div class="item">
+    <div class="card">
       <img src="https://tse4.mm.bing.net/th/id/OIP.zhrPQyX6s-4o233mYlCuFQHaFl?cb=thfc1&rs=1&pid=ImgDetMain&o=7&rm=3">
       <h3>Veg Burger</h3>
-      <p>₹120</p>
-      <button onclick="addToCart('Veg Burger', 120)">Add to Cart</button>
+      <p>₹100</p>
+      <button onclick="addToCart('Veg Burger',100)">Add to Cart</button>
     </div>
-
-    <div class="item">
+    <div class="card">
       <img src="https://tse4.mm.bing.net/th/id/OIP.dJXRd-YM1toRB7KnZNgEKwHaE8?cb=thfc1&rs=1&pid=ImgDetMain&o=7&rm=3">
       <h3>Pasta</h3>
-      <p>₹150</p>
-      <button onclick="addToCart('Pasta', 150)">Add to Cart</button>
+      <p>₹120</p>
+      <button onclick="addToCart('Pasta',120)">Add to Cart</button>
     </div>
-
-    <div class="item">
+    <div class="card">
       <img src="https://static.vecteezy.com/system/resources/previews/047/429/595/non_2x/refreshing-glass-of-cola-with-ice-cubes-splashing-out-perfect-for-representing-a-cool-beverage-or-drink-advertisement-png.png">
       <h3>Cold Drink</h3>
       <p>₹50</p>
-      <button onclick="addToCart('Cold Drink', 50)">Add to Cart</button>
+      <button onclick="addToCart('Cold Drink',50)">Add to Cart</button>
     </div>
   </div>
-
-  <footer>
-    <button onclick="window.location.href='cart.html'">🛒 View Cart</button>
-  </footer>
+  <button class="cart-btn" onclick="viewCart()">🛒 View Cart</button>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCblVFb8ZauMSewDyDDcIAHxILBxXq7_hI",
-      authDomain: "food-court-c8a15.firebaseapp.com",
-      projectId: "food-court-c8a15",
-      storageBucket: "food-court-c8a15.appspot.com",
-      messagingSenderId: "815353079827",
-      appId: "1:815353079827:web:13adeed5eeb3ceec0977e6",
-      measurementId: "G-0JT07G04MJ"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    import { db, addDoc, collection } from "./firebase.js";
 
     window.addToCart = async function(item, price) {
       try {
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        let found = cart.find(i => i.item === item);
-        if (found) {
-          found.quantity++;
-        } else {
-          cart.push({ item, price, quantity: 1 });
-        }
-        localStorage.setItem("cart", JSON.stringify(cart));
-        alert(`✅ ${item} Added to Cart!`);
+        await addDoc(collection(db, "orders"), {
+          item: item,
+          quantity: 1,
+          price: price,
+          time: new Date()
+        });
+        alert(`✅ ${item} added to cart!`);
       } catch (err) {
         console.error(err);
-        alert("❌ Error!");
+        alert("❌ Error adding to cart!");
       }
-    };
+    }
+
+    window.viewCart = function() {
+      alert("Cart functionality coming soon!");
+    }
   </script>
 </body>
 </html>
+
 
 
