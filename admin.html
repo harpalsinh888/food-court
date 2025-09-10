@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Orders</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>📦 Admin Panel</header>
+<table id="ordersTable">
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th>Qty</th>
+      <th>Price</th>
+      <th>Time</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+  import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCblVFb8ZauMSewDyDDcIAHxILBxXq7_hI",
+    authDomain: "food-court-c8a15.firebaseapp.com",
+    projectId: "food-court-c8a15",
+    storageBucket: "food-court-c8a15.firebasestorage.app",
+    messagingSenderId: "815353079827",
+    appId: "1:815353079827:web:13adeed5eeb3ceec0977e6",
+    measurementId: "G-0JT07G04MJ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const tableBody = document.querySelector("#ordersTable tbody");
+
+  onSnapshot(collection(db, "orders"), (snapshot) => {
+    tableBody.innerHTML = "";
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${data.item}</td>
+        <td>${data.quantity}</td>
+        <td>₹${data.price}</td>
+        <td>${new Date(data.time.seconds * 1000).toLocaleString()}</td>
+      `;
+      tableBody.appendChild(row);
+    });
+  });
+</script>
+</body>
+</html>
