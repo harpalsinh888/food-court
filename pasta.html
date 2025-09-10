@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pasta - Food Court</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>🍝 Pasta</header>
+<nav>
+  <a href="index.html">Home</a>
+  <a href="pizza.html">Pizza</a>
+  <a href="drink.html">Drinks</a>
+</nav>
+<div class="container">
+  <div class="card">
+    <img src="https://tse4.mm.bing.net/th/id/OIP.dJXRd-YM1toRB7KnZNgEKwHaE8?cb=thfc1&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Pasta">
+    <h3>Pasta</h3>
+    <p>₹80</p>
+    <button class="btn" onclick="addToCart('Pasta', 80)">Add to Cart</button>
+  </div>
+</div>
+<footer>
+  <button onclick="placeOrder()">View Cart & Place Order</button>
+</footer>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>
