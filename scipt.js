@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCblVFb8ZauMSewDyDDcIAHxILBxXq7_hI",
@@ -12,11 +13,38 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
+window.sendOTP = function() {
+  const phone = document.getElementById("phone").value;
+  window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {});
+  const appVerifier = window.recaptchaVerifier;
+
+  signInWithPhoneNumber(auth, phone, appVerifier)
+    .then(confirmationResult => {
+      window.confirmationResult = confirmationResult;
+      alert("📩 OTP Sent!");
+    })
+    .catch(error => {
+      console.error(error);
+      alert("Error sending OTP!");
+    });
+};
+
+window.verifyOTP = function() {
+  const otp = document.getElementById("otp").value;
+  confirmationResult.confirm(otp).then(() => {
+    alert("✅ Login Successful!");
+    window.location.href = "index.html"; // Go to user home
+  }).catch(() => {
+    alert("❌ Invalid OTP!");
+  });
+};
+
+// Cart & Order Functions (same as before)
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-// Add Item
 window.addToCart = function(item, price) {
   const found = cart.find(c => c.item === item);
   if (found) {
@@ -29,11 +57,9 @@ window.addToCart = function(item, price) {
   window.location.href = "cart.html";
 };
 
-// Load Cart Table
 function loadCart() {
   const tableBody = document.querySelector("#cartTable tbody");
   if (!tableBody) return;
-
   tableBody.innerHTML = "";
   let total = 0;
 
@@ -59,7 +85,6 @@ function loadCart() {
   document.getElementById("totalAmount").textContent = `Total: ₹${total}`;
 }
 
-// Change Qty
 window.changeQty = function(index, change) {
   cart[index].qty += change;
   if (cart[index].qty <= 0) cart.splice(index, 1);
@@ -67,14 +92,12 @@ window.changeQty = function(index, change) {
   loadCart();
 };
 
-// Remove Item
 window.removeItem = function(index) {
   cart.splice(index, 1);
   localStorage.setItem("cart", JSON.stringify(cart));
   loadCart();
 };
 
-// Checkout
 window.checkout = async function() {
   if (cart.length === 0) {
     alert("Your cart is empty!");
@@ -100,4 +123,5 @@ window.checkout = async function() {
 };
 
 loadCart();
+
 
