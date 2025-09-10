@@ -3,109 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel - Food Court</title>
+  <title>Admin Dashboard</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      margin: 0;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #ff5722;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      background: #fff;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 12px;
-      text-align: center;
-    }
-    th {
-      background: #ff5722;
-      color: white;
-    }
-    tr:nth-child(even) {
-      background: #f2f2f2;
-    }
-    .refresh {
-      display: block;
-      margin: 20px auto;
-      padding: 10px 20px;
-      background: #ff5722;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f9f9f9; }
+    header { background: #ff7043; color: white; padding: 15px; text-align: center; font-size: 24px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 10px; border: 1px solid #ddd; text-align: center; }
+    th { background: #ffccbc; }
   </style>
 </head>
 <body>
-  <h1>📦 Orders - Admin Panel</h1>
-  <table id="ordersTable">
+  <header>📊 Admin Dashboard</header>
+  <table>
     <thead>
       <tr>
         <th>Item</th>
-        <th>Quantity</th>
+        <th>Qty</th>
         <th>Price</th>
         <th>Time</th>
       </tr>
     </thead>
-    <tbody id="ordersBody">
-      <tr><td colspan="4">Loading orders...</td></tr>
-    </tbody>
+    <tbody id="orders"></tbody>
   </table>
 
   <script type="module">
-    // Import Firebase SDK
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-    import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+    import { db, collection, onSnapshot } from "./firebase.js";
 
-    // Firebase Config (તમારા project નું config મૂકો)
-    const firebaseConfig = {
-      apiKey: "AIzaSyCblVFb8ZauMSewDyDDcIAHxILBxXq7_hI",
-      authDomain: "food-court-c8a15.firebaseapp.com",
-      projectId: "food-court-c8a15",
-      storageBucket: "food-court-c8a15.firebasestorage.app",
-      messagingSenderId: "815353079827",
-      appId: "1:815353079827:web:13adeed5eeb3ceec0977e6",
-      measurementId: "G-0JT07G04MJ"
-    };
+    const ordersTable = document.getElementById("orders");
+    const ordersRef = collection(db, "orders");
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    // Orders Table
-    const ordersBody = document.getElementById("ordersBody");
-
-    // Live listener for orders
-    const q = query(collection(db, "orders"), orderBy("time", "desc"));
-    onSnapshot(q, (snapshot) => {
-      ordersBody.innerHTML = "";
-      if (snapshot.empty) {
-        ordersBody.innerHTML = `<tr><td colspan="4">No orders yet</td></tr>`;
-      } else {
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${data.item}</td>
-            <td>${data.quantity}</td>
-            <td>₹${data.price}</td>
-            <td>${new Date(data.time.seconds * 1000).toLocaleString()}</td>
-          `;
-          ordersBody.appendChild(tr);
-        });
-      }
+    onSnapshot(ordersRef, (snapshot) => {
+      ordersTable.innerHTML = "";
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const row = `<tr>
+          <td>${data.item}</td>
+          <td>${data.quantity}</td>
+          <td>₹${data.price}</td>
+          <td>${new Date(data.time.seconds*1000).toLocaleString()}</td>
+        </tr>`;
+        ordersTable.innerHTML += row;
+      });
     });
   </script>
 </body>
 </html>
+
 
