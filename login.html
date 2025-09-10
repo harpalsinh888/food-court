@@ -7,51 +7,78 @@
   <style>
     body {
       font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ff7043, #ffccbc);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background: #f5f5f5;
+      margin: 0;
     }
-    .box {
+    .container {
       background: #fff;
-      padding: 20px;
+      padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      width: 300px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
       text-align: center;
+      width: 300px;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #ff5722;
     }
     input, button {
-      width: 90%;
+      width: 100%;
       padding: 10px;
       margin: 10px 0;
-      border: 1px solid #ccc;
       border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
     }
-    button { background: #ff4d4d; color: white; border: none; cursor: pointer; }
+    button {
+      background: #ff5722;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #e64a19;
+    }
+    #recaptcha-container {
+      margin: 10px 0;
+    }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h2>🍔 Food Court</h2>
-    <button onclick="window.location.href='admin.html'">🔑 Login as Admin</button>
-    <hr>
-    <input type="text" id="phone" placeholder="+91 9876543210">
-    <div id="recaptcha-container"></div>
-    <button onclick="sendOTP()">📩 Send OTP</button>
-    <input type="text" id="otp" placeholder="Enter OTP">
-    <button onclick="verifyOTP()">✅ Verify & Login</button>
+  <div class="container">
+    <h1>Login</h1>
+    <button onclick="showAdminLogin()">👨‍💻 Admin Login</button>
+    <button onclick="showUserLogin()">👤 User Login</button>
+
+    <div id="adminLogin" style="display:none;">
+      <input type="password" id="adminPass" placeholder="Enter Admin Password">
+      <button onclick="adminLogin()">Login as Admin</button>
+    </div>
+
+    <div id="userLogin" style="display:none;">
+      <input type="text" id="phone" placeholder="+91XXXXXXXXXX">
+      <div id="recaptcha-container"></div>
+      <button onclick="sendOTP()">Send OTP</button>
+      <input type="text" id="otp" placeholder="Enter OTP">
+      <button onclick="verifyOTP()">Verify OTP</button>
+    </div>
   </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-    import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+    // Import Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
+    // Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyCblVFb8ZauMSewDyDDcIAHxILBxXq7_hI",
       authDomain: "food-court-c8a15.firebaseapp.com",
       projectId: "food-court-c8a15",
-      storageBucket: "food-court-c8a15.appspot.com",
+      storageBucket: "food-court-c8a15.firebasestorage.app",
       messagingSenderId: "815353079827",
       appId: "1:815353079827:web:13adeed5eeb3ceec0977e6",
       measurementId: "G-0JT07G04MJ"
@@ -59,34 +86,62 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-
-    window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
-      size: "normal"
+    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+      'size': 'normal',
+      'callback': (response) => { console.log("Recaptcha Verified!"); }
     });
 
+    // Show Admin Login
+    window.showAdminLogin = function() {
+      document.getElementById("adminLogin").style.display = "block";
+      document.getElementById("userLogin").style.display = "none";
+    }
+
+    // Show User Login
+    window.showUserLogin = function() {
+      document.getElementById("userLogin").style.display = "block";
+      document.getElementById("adminLogin").style.display = "none";
+    }
+
+    // Admin Login (Fixed Password)
+    window.adminLogin = function() {
+      const pass = document.getElementById("adminPass").value;
+      if (pass === "admin123") {
+        alert("✅ Admin Login Successful");
+        window.location.href = "admin.html";
+      } else {
+        alert("❌ Wrong Password!");
+      }
+    }
+
+    // Send OTP
     window.sendOTP = function() {
       const phoneNumber = document.getElementById("phone").value;
-      signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier)
+      const appVerifier = window.recaptchaVerifier;
+
+      signInWithPhoneNumber(auth, phoneNumber, appVerifier)
         .then((confirmationResult) => {
           window.confirmationResult = confirmationResult;
-          alert("📩 OTP Sent!");
+          alert("OTP Sent!");
         })
         .catch((error) => {
-          alert("❌ Error sending OTP!");
           console.error(error);
+          alert("Error sending OTP");
         });
-    };
+    }
 
+    // Verify OTP
     window.verifyOTP = function() {
-      const otp = document.getElementById("otp").value;
-      confirmationResult.confirm(otp)
-        .then(() => {
-          alert("✅ Login Successful!");
-          window.location.href = "index.html";
-        })
-        .catch(() => alert("❌ Invalid OTP!"));
-    };
+      const code = document.getElementById("otp").value;
+      window.confirmationResult.confirm(code).then((result) => {
+        alert("✅ User Login Successful");
+        window.location.href = "index.html";
+      }).catch((error) => {
+        alert("❌ Wrong OTP");
+      });
+    }
   </script>
 </body>
 </html>
+
 
